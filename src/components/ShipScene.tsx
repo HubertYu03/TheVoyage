@@ -25,8 +25,12 @@ import gsap from "gsap";
 // Importing Sound dependencies
 import useSound from "use-sound";
 import ButtonHover from "/sounds/ButtonHover.mp3";
+import ShipAmbience from "/sounds/ShipAmbience.mp3";
+import SettingUI from "./SettingUI";
+import type { PlanetDialogueSection } from "../types/global";
+import GuidePopups from "./GuidePopups";
 
-const FPSControls = () => {
+const FPSControls = ({ talking }: { talking: boolean }) => {
   const controlRef = useRef<OrbitControlsImpl>(null!);
   const forward: THREE.Vector3 = useMemo(() => new THREE.Vector3(), []);
 
@@ -47,6 +51,7 @@ const FPSControls = () => {
 
   return (
     <OrbitControls
+      enabled={!talking}
       ref={controlRef}
       enableZoom={false}
       enablePan={false}
@@ -59,7 +64,11 @@ const FPSControls = () => {
   );
 };
 
-const ShipScene = () => {
+type ShipSceneProps = {
+  dialogue: PlanetDialogueSection;
+};
+
+const ShipScene = ({ dialogue }: ShipSceneProps) => {
   const lightLeftRef = useRef<THREE.PointLight>(null!);
   const lightRightRef = useRef<THREE.PointLight>(null!);
 
@@ -74,8 +83,13 @@ const ShipScene = () => {
     SpaceBackground
   );
 
+  // State for text so that the user cannot pan during text
+  const [talking, setTalking] = useState<boolean>(false);
+
   // State for checking if the canvas is loaded
   const { active } = useProgress();
+
+  // State for starting the game
   const [start, setStart] = useState<boolean>(false);
 
   // Animation Functions and Configurations
@@ -83,8 +97,15 @@ const ShipScene = () => {
 
   const handleStart = () => {
     playButtonHover();
+    playAmbience();
+
+    // Start the game
     setStart(true);
 
+    // Start the dialogue
+    setTalking(true);
+
+    // Start the fade in animation
     tl.current = gsap
       .timeline()
       .fromTo(
@@ -95,23 +116,43 @@ const ShipScene = () => {
   };
 
   // Sound Management
-  const [playButtonHover] = useSound(ButtonHover);
+  const [playButtonHover] = useSound(ButtonHover, { volume: 0.2 });
+  const [playAmbience, { stop: stopAmbience }] = useSound(ShipAmbience, {
+    loop: true,
+  });
+
+  // States for the initial tutorial
+  const [tutorialIndex, setTutorialIndex] = useState<number>(0);
 
   return (
     <section>
-      <InterfaceManager start={start} />
+      {/* Interface for Text */}
+      <InterfaceManager
+        start={start}
+        talking={talking}
+        setTalking={setTalking}
+        playButtonHover={playButtonHover}
+        planetDialogueData={dialogue}
+        setTutorialIndex={setTutorialIndex}
+      />
+
+      {/* Popups for the tutorial */}
+      <GuidePopups tutorialIndex={start ? tutorialIndex : -1} />
+
+      {/* Buttons for UI */}
+      <SettingUI playAmbience={playAmbience} stopAmbience={stopAmbience} />
 
       {!start && !active && (
         <div className="flex-center h-screen">
           <button onClick={handleStart} className="hologram button p-4">
-            <p className="hologram-text text-3xl">Begin Voyage</p>
+            <p className="hologram-text text-3xl select-none">BEGIN VOYAGE</p>
           </button>
         </div>
       )}
 
       <div ref={canvasRef} className={`canvas ${!start && "hidden"}`}>
         <Canvas>
-          <FPSControls />
+          <FPSControls talking={talking} />
 
           <mesh position={[0, 0, 300]} rotation={[0, Math.PI, 0]}>
             <planeGeometry args={[400, 400]} />
@@ -137,7 +178,7 @@ const ShipScene = () => {
             castShadow
           />
 
-          <Ship />
+          <Ship talking={talking} />
 
           {/* Effect Composer Settings */}
           <EffectComposer>
