@@ -6,7 +6,7 @@
 
 body {
   font-family: "Sarpanch", sans-serif;
-  cursor: url("images/Cursor.png"), auto;
+  cursor: url("/images/Cursor.png"), auto;
   background: black;
 }
 
@@ -20,7 +20,7 @@ body {
 }
 
 .button:hover {
-  cursor: url("images/Pointer.png"), auto;
+  cursor: url("/images/Pointer.png"), auto;
   opacity: 0.75;
 }
 

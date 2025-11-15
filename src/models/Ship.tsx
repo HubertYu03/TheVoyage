@@ -122,10 +122,10 @@ const Ship = ({ props }: ShipProps) => {
         rotation={[-0.901, 0, 0]}
         ref={(mesh) => mesh && mesh.layers.enable(1)}
         onPointerEnter={() => {
-          document.body.style.cursor = "url('images/Pointer.png'), auto";
+          document.body.style.cursor = "url('/images/Pointer.png'), auto";
         }}
         onPointerLeave={() => {
-          document.body.style.cursor = "url('images/Cursor.png'), auto";
+          document.body.style.cursor = "url('/images/Cursor.png'), auto";
         }}
       >
         <LightMaterial />
