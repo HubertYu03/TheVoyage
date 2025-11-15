@@ -21,7 +21,7 @@ function App() {
 
   return (
     <main>
-      <ShipScene dialogue={currentDialogue} />
+      <ShipScene dialogue={currentDialogue} currentPlanet={currentPlanet} />
     </main>
   );
 }

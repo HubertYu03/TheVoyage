@@ -31,6 +31,7 @@ type InterfaceManagerProps = {
   playButtonHover: () => void;
   planetDialogueData: PlanetDialogueSection;
   setTutorialIndex: Dispatch<SetStateAction<number>>;
+  currentPlanet: string;
 };
 
 const InterfaceManager = ({
@@ -40,6 +41,7 @@ const InterfaceManager = ({
   playButtonHover,
   planetDialogueData,
   setTutorialIndex,
+  currentPlanet,
 }: InterfaceManagerProps) => {
   const [dialogIndex, setDialogIndex] = useState<number>(0);
   const [currentTextComplete, setCurrentTextCompete] = useState<boolean>(false);
@@ -126,10 +128,15 @@ const InterfaceManager = ({
       if (dialogIndex + 1 >= currentDialogue.length) {
         setTalking(false);
         setDialogIndex(0);
-        setTutorialIndex(0);
+
+        // If the current planet is earth go through the tutorial
+        if (currentPlanet == "earth") {
+          setTutorialIndex(100);
+        }
       } else {
         setDialogIndex(dialogIndex + 1);
-        setTutorialIndex(dialogIndex + 1);
+
+        if (currentPlanet == "earth") setTutorialIndex(dialogIndex + 1);
       }
     }
   };

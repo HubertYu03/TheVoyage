@@ -4,7 +4,14 @@ import Ship from "../models/Ship";
 
 import { OrbitControls, useProgress } from "@react-three/drei";
 import { EffectComposer, SelectiveBloom } from "@react-three/postprocessing";
-import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type Dispatch,
+  type SetStateAction,
+} from "react";
 import { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 
 // Loading Images
@@ -30,20 +37,42 @@ import SettingUI from "./SettingUI";
 import type { PlanetDialogueSection } from "../types/global";
 import GuidePopups from "./GuidePopups";
 
-const FPSControls = ({ talking }: { talking: boolean }) => {
+const FPSControls = ({
+  talking,
+  setTutorialIndex,
+  tutorialIndex,
+}: {
+  talking: boolean;
+  setTutorialIndex: Dispatch<SetStateAction<number>>;
+  tutorialIndex: number;
+}) => {
   const controlRef = useRef<OrbitControlsImpl>(null!);
   const forward: THREE.Vector3 = useMemo(() => new THREE.Vector3(), []);
-
   const { camera }: { camera: THREE.Camera } = useThree();
 
   // Set the camera initial properties
   useEffect(() => {
     camera.position.set(0, 3.5, -4);
-
-    // Initial look direction
     controlRef.current.target.set(0, 3, -2.5);
     controlRef.current.update();
   }, []);
+
+  useEffect(() => {
+    const controls = controlRef.current;
+
+    const onChange = () => {
+      setTutorialIndex((prev) => {
+        if (prev >= 100) return -1;
+        return prev;
+      });
+    };
+
+    controls.addEventListener("change", onChange);
+
+    return () => {
+      controls.removeEventListener("change", onChange);
+    };
+  }, [setTutorialIndex]);
 
   useFrame((state) => {
     state.camera.getWorldDirection(forward);
@@ -66,9 +95,10 @@ const FPSControls = ({ talking }: { talking: boolean }) => {
 
 type ShipSceneProps = {
   dialogue: PlanetDialogueSection;
+  currentPlanet: string;
 };
 
-const ShipScene = ({ dialogue }: ShipSceneProps) => {
+const ShipScene = ({ dialogue, currentPlanet }: ShipSceneProps) => {
   const lightLeftRef = useRef<THREE.PointLight>(null!);
   const lightRightRef = useRef<THREE.PointLight>(null!);
 
@@ -134,10 +164,13 @@ const ShipScene = ({ dialogue }: ShipSceneProps) => {
         playButtonHover={playButtonHover}
         planetDialogueData={dialogue}
         setTutorialIndex={setTutorialIndex}
+        currentPlanet={currentPlanet}
       />
 
       {/* Popups for the tutorial */}
-      <GuidePopups tutorialIndex={start ? tutorialIndex : -1} />
+      <GuidePopups
+        tutorialIndex={start && currentPlanet == "earth" ? tutorialIndex : -1}
+      />
 
       {/* Buttons for UI */}
       <SettingUI playAmbience={playAmbience} stopAmbience={stopAmbience} />
@@ -152,7 +185,11 @@ const ShipScene = ({ dialogue }: ShipSceneProps) => {
 
       <div ref={canvasRef} className={`canvas ${!start && "hidden"}`}>
         <Canvas>
-          <FPSControls talking={talking} />
+          <FPSControls
+            talking={talking}
+            setTutorialIndex={setTutorialIndex}
+            tutorialIndex={tutorialIndex}
+          />
 
           <mesh position={[0, 0, 300]} rotation={[0, Math.PI, 0]}>
             <planeGeometry args={[400, 400]} />
