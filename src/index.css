@@ -1,9 +1,49 @@
+@import url("https://fonts.googleapis.com/css2?family=Sarpanch:wght@400;500;600;700;800;900&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+body {
+  font-family: "Sarpanch", sans-serif;
+  cursor: url("images/Cursor.png"), auto;
+  background: black;
+}
+
+.hologram {
+  background: #090979;
+  background: radial-gradient(
+    circle,
+    rgba(9, 9, 121, 0.5) 80%,
+    rgba(0, 212, 255, 0.5) 100%
+  );
+}
+
+.button:hover {
+  cursor: url("images/Pointer.png"), auto;
+  opacity: 0.75;
+}
+
+.button:active {
+  transform: scale(0.9);
+}
+
 @layer components {
   .canvas {
-    @apply w-screen h-screen;
+    @apply w-screen h-screen bg-black z-10;
+  }
+}
+
+@layer utilities {
+  .hologram {
+    @apply rounded-md border-[#00d5ff62] border-2;
+  }
+
+  .hologram-text {
+    @apply text-[#00D4FF] font-semibold;
+  }
+
+  .flex-center {
+    @apply flex items-center justify-center;
   }
 }

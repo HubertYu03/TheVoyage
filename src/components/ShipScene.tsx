@@ -2,17 +2,30 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import Ship from "../models/Ship";
 
-import { OrbitControls } from "@react-three/drei";
-import {
-  EffectComposer,
-  Outline,
-  SelectiveBloom,
-} from "@react-three/postprocessing";
+import { OrbitControls, useProgress } from "@react-three/drei";
+import { EffectComposer, SelectiveBloom } from "@react-three/postprocessing";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 
+// Loading Images
+import { useLoader } from "@react-three/fiber";
+import { TextureLoader } from "three";
+
+// Importing Images
+import Earth from "/images/Earth.png";
+import SpaceBackground from "/images/SpaceBackground.jpeg";
+
 // Importing Three Types
 import * as THREE from "three";
+import InterfaceManager from "./InterfaceManager";
+
+// Importing GSAP dependencies
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+
+// Importing Sound dependencies
+import useSound from "use-sound";
+import ButtonHover from "/sounds/ButtonHover.mp3";
 
 const FPSControls = () => {
   const controlRef = useRef<OrbitControlsImpl>(null!);
@@ -48,29 +61,98 @@ const FPSControls = () => {
 };
 
 const ShipScene = () => {
-  const lightRef = useRef<THREE.PointLight>(null!);
+  const lightLeftRef = useRef<THREE.PointLight>(null!);
+  const lightRightRef = useRef<THREE.PointLight>(null!);
+
+  const canvasRef = useRef<HTMLDivElement>(null!);
+
+  const EarthTexture: THREE.Texture<HTMLImageElement> = useLoader(
+    TextureLoader,
+    Earth
+  );
+  const SpaceTexture: THREE.Texture<HTMLImageElement> = useLoader(
+    TextureLoader,
+    SpaceBackground
+  );
+
+  // State for checking if the canvas is loaded
+  const { active } = useProgress();
+  const [start, setStart] = useState<boolean>(false);
+
+  // Animation Functions and Configurations
+  const tl = useRef<GSAPTimeline>(null!);
+
+  const handleStart = () => {
+    playButtonHover();
+    setStart(true);
+
+    tl.current = gsap
+      .timeline()
+      .fromTo(
+        canvasRef.current,
+        { opacity: 0 },
+        { opacity: 1, duration: 2, ease: "power2.inOut" }
+      );
+  };
+
+  // Sound Management
+  const [playButtonHover] = useSound(ButtonHover);
 
   return (
-    <section className="canvas">
-      <Canvas>
-        <FPSControls />
+    <section>
+      <InterfaceManager start={start} />
 
-        <ambientLight intensity={1} />
-        <pointLight ref={lightRef} intensity={0.5} position={[0, 3.5, -4]} />
-        <Ship />
+      {!start && !active && (
+        <div className="flex-center h-screen">
+          <button onClick={handleStart} className="hologram button p-4">
+            <p className="hologram-text text-3xl">Begin Voyage</p>
+          </button>
+        </div>
+      )}
 
-        {/* Effect Composer Settings */}
-        <EffectComposer>
-          <SelectiveBloom
-            mipmapBlur
-            selectionLayer={1}
-            lights={[lightRef]}
-            luminanceThreshold={1}
-            levels={3.1}
-            intensity={0.2}
+      <div ref={canvasRef} className={`canvas ${!start && "hidden"}`}>
+        <Canvas>
+          <FPSControls />
+
+          <mesh position={[0, 0, 300]} rotation={[0, Math.PI, 0]}>
+            <planeGeometry args={[400, 400]} />
+            <meshBasicMaterial transparent={true} map={EarthTexture} />
+          </mesh>
+
+          <mesh position={[0, 0, 395]} rotation={[0, Math.PI, 0]}>
+            <planeGeometry args={[5000, 1500]} />
+            <meshBasicMaterial transparent={true} map={SpaceTexture} />
+          </mesh>
+
+          <ambientLight intensity={0.1} />
+          <pointLight
+            ref={lightLeftRef}
+            intensity={3}
+            position={[3, 3.5, -4]}
+            castShadow
           />
-        </EffectComposer>
-      </Canvas>
+          <pointLight
+            ref={lightRightRef}
+            intensity={3}
+            position={[-3, 3.5, -4]}
+            castShadow
+          />
+
+          <Ship />
+
+          {/* Effect Composer Settings */}
+          <EffectComposer>
+            <SelectiveBloom
+              mipmapBlur
+              selectionLayer={1}
+              lights={[lightLeftRef, lightRightRef]}
+              luminanceThreshold={1}
+              levels={3.1}
+              intensity={0.2}
+            />
+          </EffectComposer>
+        </Canvas>
+      </div>
     </section>
   );
 };

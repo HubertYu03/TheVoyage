@@ -7,7 +7,7 @@ import { useGLTF } from "@react-three/drei";
 
 // Importing types
 import { type GLTF } from "three-stdlib";
-import { useRef, type JSX } from "react";
+import { type JSX } from "react";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -121,6 +121,12 @@ const Ship = ({ props }: ShipProps) => {
         position={[1.321, 1.769, -0.48]}
         rotation={[-0.901, 0, 0]}
         ref={(mesh) => mesh && mesh.layers.enable(1)}
+        onPointerEnter={() => {
+          document.body.style.cursor = "url('images/Pointer.png'), auto";
+        }}
+        onPointerLeave={() => {
+          document.body.style.cursor = "url('images/Cursor.png'), auto";
+        }}
       >
         <LightMaterial />
       </mesh>
