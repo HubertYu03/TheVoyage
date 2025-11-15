@@ -48,7 +48,11 @@ const InterfaceManager = ({ start }: InterfaceManagerProps) => {
   }, [start, dialogIndex]);
 
   const handleNextText = () => {
-    setDialogIndex(dialogIndex + 1);
+    if (dialogIndex + 1 > test.length) {
+      setTalking(false);
+    } else {
+      setDialogIndex(dialogIndex + 1);
+    }
   };
 
   return (

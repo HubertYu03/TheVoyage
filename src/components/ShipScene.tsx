@@ -20,7 +20,6 @@ import * as THREE from "three";
 import InterfaceManager from "./InterfaceManager";
 
 // Importing GSAP dependencies
-import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 
 // Importing Sound dependencies
