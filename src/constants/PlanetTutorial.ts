@@ -36,21 +36,21 @@ export const TutorialDialogue: Record<string, DialogueEntry[]> = {
       avatar: RiRobot3Fill,
       text: "To collect our first set of data we need to enable our ORBIT CONTROLS.",
     },
-    // {
-    //   speaker: "COMPUTER",
-    //   avatar: RiRobot3Fill,
-    //   text: "When THE BEYOND is set into orbit mode it will survey the outside of the planet.",
-    // },
-    // {
-    //   speaker: "COMPUTER",
-    //   avatar: RiRobot3Fill,
-    //   text: "We will be able to find out the COLOR, MOONS, SIZE, and if the planet has a RING.",
-    // },
-    // {
-    //   speaker: "COMPUTER",
-    //   avatar: RiRobot3Fill,
-    //   text: "You can enable the ORBIT CONTROLS by clicking the switch right under the central lever.",
-    // },
+    {
+      speaker: "COMPUTER",
+      avatar: RiRobot3Fill,
+      text: "When THE BEYOND is set into orbit mode it will survey the outside of the planet.",
+    },
+    {
+      speaker: "COMPUTER",
+      avatar: RiRobot3Fill,
+      text: "We will be able to find out the COLOR, MOONS, SIZE, and if the planet has a RING.",
+    },
+    {
+      speaker: "COMPUTER",
+      avatar: RiRobot3Fill,
+      text: "You can enable the ORBIT CONTROLS by clicking the switch right under the central lever.",
+    },
   ],
   "Orbit Controls": [
     {
@@ -104,21 +104,21 @@ export const TutorialDialogue: Record<string, DialogueEntry[]> = {
       avatar: RiRobot3Fill,
       text: "Once the shields are complete, as we approach the planet's surface we are able to gather data about its SURFACE TYPE.",
     },
-    // {
-    //   speaker: "COMPUTER",
-    //   avatar: RiRobot3Fill,
-    //   text: "Since this is the final data point, we will now be able to select the next destination.",
-    // },
-    // {
-    //   speaker: "COMPUTER",
-    //   avatar: RiRobot3Fill,
-    //   text: "We can access our next destination by using the MAP.",
-    // },
-    // {
-    //   speaker: "COMPUTER",
-    //   avatar: RiRobot3Fill,
-    //   text: "To open the MAP, click on the LEFT SCREEN.",
-    // },
+    {
+      speaker: "COMPUTER",
+      avatar: RiRobot3Fill,
+      text: "Since this is the final data point, we will now be able to select the next destination.",
+    },
+    {
+      speaker: "COMPUTER",
+      avatar: RiRobot3Fill,
+      text: "We can access our next destination by using the MAP.",
+    },
+    {
+      speaker: "COMPUTER",
+      avatar: RiRobot3Fill,
+      text: "To open the MAP, click on the LEFT SCREEN.",
+    },
   ],
   Map: [
     {
@@ -126,25 +126,25 @@ export const TutorialDialogue: Record<string, DialogueEntry[]> = {
       avatar: RiRobot3Fill,
       text: "On the map you can see what destinations we are able to go to.",
     },
-    // {
-    //   speaker: "COMPUTER",
-    //   avatar: RiRobot3Fill,
-    //   text: "Planets that have a CHECKMARK mean that we have already explored it.",
-    // },
-    // {
-    //   speaker: "COMPUTER",
-    //   avatar: RiRobot3Fill,
-    //   text: "Planets that have a LOCK mean that it is inaccessible.",
-    // },
-    // {
-    //   speaker: "COMPUTER",
-    //   avatar: RiRobot3Fill,
-    //   text: "Planets that we are able to select means that it would be the next destination.",
-    // },
-    // {
-    //   speaker: "COMPUTER",
-    //   avatar: RiRobot3Fill,
-    //   text: "Click on the MAP, which is the screen to the left of the CONSOLE.",
-    // },
+    {
+      speaker: "COMPUTER",
+      avatar: RiRobot3Fill,
+      text: "Planets that have a CHECKMARK mean that we have already explored it.",
+    },
+    {
+      speaker: "COMPUTER",
+      avatar: RiRobot3Fill,
+      text: "Planets that have a LOCK mean that it is inaccessible.",
+    },
+    {
+      speaker: "COMPUTER",
+      avatar: RiRobot3Fill,
+      text: "Planets that we are able to select means that it would be the next destination.",
+    },
+    {
+      speaker: "COMPUTER",
+      avatar: RiRobot3Fill,
+      text: "Click on the MAP, which is the screen to the left of the CONSOLE.",
+    },
   ],
 };
