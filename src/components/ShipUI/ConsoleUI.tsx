@@ -12,7 +12,11 @@ import {
 import { FaWindowClose } from "react-icons/fa";
 import { FaRegWindowClose } from "react-icons/fa";
 import { PlanetData } from "../../constants/PlanetData";
-import type { DialogueEntry, Planet } from "../../types/global";
+import type {
+  DialogueEntry,
+  Planet,
+  PlanetProgression,
+} from "../../types/global";
 import { TutorialDialogue } from "../../constants/PlanetTutorial";
 
 type ConsoleUIProps = {
@@ -24,6 +28,7 @@ type ConsoleUIProps = {
   talking: boolean;
   tutorial: boolean;
   tutorialStep: number;
+  planets: Record<string, PlanetProgression>;
 };
 
 const ConsoleUI = ({
@@ -35,6 +40,7 @@ const ConsoleUI = ({
   talking,
   tutorial,
   tutorialStep,
+  planets,
 }: ConsoleUIProps) => {
   const holoRef = useRef<HTMLDivElement>(null!);
 
@@ -129,8 +135,47 @@ const ConsoleUI = ({
           </div>
 
           {/* Right side will have the information that contains information about the selected planet */}
-          <div className="w-3/4">
-            <p className="hologram-text">{selectedPlanet.name}</p>
+          <div className="w-3/4 px-12 hologram-text">
+            <p className="text-4xl font-bold">{selectedPlanet.name}</p>
+
+            <p className="text-md mt-2">{selectedPlanet.desc}</p>
+
+            <p className="text-2xl mt-5 font-bold">
+              {selectedPlanet.name} Data:
+            </p>
+
+            <p>
+              Color:{" "}
+              {planets[currentPlanet.name].color ? currentPlanet.color : "???"}
+            </p>
+            <p>
+              Average Temperature:{" "}
+              {planets[currentPlanet.name].temp
+                ? `${currentPlanet.avgTempF}°F (${currentPlanet.avgTempC})°C`
+                : "???"}
+            </p>
+            <p>
+              Surface Type:{" "}
+              {planets[currentPlanet.name].surfaceType
+                ? currentPlanet.surfaceType
+                : "???"}
+            </p>
+            <p>
+              {"Size(Diameter)"}:{" "}
+              {planets[currentPlanet.name].size
+                ? `${currentPlanet.sizeMI}mi (${currentPlanet.sizeKM})km`
+                : "???"}
+            </p>
+            <p>
+              Moons:{" "}
+              {planets[currentPlanet.name].moons ? currentPlanet.moons : "???"}
+            </p>
+            <p>
+              Rings:{" "}
+              {planets[currentPlanet.name].rings
+                ? `${currentPlanet.rings ? "Yes" : "No"}`
+                : "???"}
+            </p>
           </div>
         </div>
       </div>

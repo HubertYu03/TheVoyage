@@ -20,6 +20,7 @@ export const PlanetData: Planet[] = [
     sizeMI: 3032,
     moons: 0,
     rings: false,
+    desc: "Mercury is only slightly larger than Earth's Moon. It's the fastest planet, zipping around the Sun every 88 Earth days. Mercury is named for the swiftest of the ancient Roman gods.",
   },
   {
     name: "Venus",
@@ -34,6 +35,7 @@ export const PlanetData: Planet[] = [
     sizeMI: 7521,
     moons: 0,
     rings: false,
+    desc: "Venus is a cloud-swaddled planet and our nearest planetary neighbor. It has a surface hot enough to melt lead.",
   },
   {
     name: "Earth",
@@ -48,6 +50,7 @@ export const PlanetData: Planet[] = [
     sizeMI: 7918,
     moons: 1,
     rings: false,
+    desc: "Earth is the third planet from the Sun and the only known place in the universe where life exists. It is an 'ocean world' with liquid water covering approximately 71% of its surface, a critical factor in its ability to support living organisms.",
   },
   {
     name: "Mars",
@@ -62,6 +65,7 @@ export const PlanetData: Planet[] = [
     sizeMI: 4212,
     moons: 2,
     rings: false,
+    desc: "Mars is no place for the faint-hearted. It's dry, rocky, and bitter cold. The fourth planet from the Sun, Mars is one of Earth's two closest planetary neighbors (Venus is the other). Mars is one of the easiest planets to spot in the night sky — it looks like a bright red point of light.",
   },
   {
     name: "Jupiter",
@@ -76,6 +80,7 @@ export const PlanetData: Planet[] = [
     sizeMI: 86881,
     moons: 95,
     rings: false,
+    desc: "If Jupiter was a hollow shell, 1,000 Earths could fit inside. But the 'King of Planets' is no lumbering giant — Jupiter has the shortest day in the solar system, taking about 9.9 hours to spin around once on its axis.",
   },
   {
     name: "Saturn",
@@ -90,6 +95,7 @@ export const PlanetData: Planet[] = [
     sizeMI: 72366,
     moons: 274,
     rings: true,
+    desc: "Saturn is a massive ball made mostly of hydrogen and helium. It's surrounded by a beautiful ring system. It's the farthest planet from Earth discovered by the unaided human eye.",
   },
   {
     name: "Uranus",
@@ -104,6 +110,7 @@ export const PlanetData: Planet[] = [
     sizeMI: 31518,
     moons: 28,
     rings: true,
+    desc: "Uranus is very cold and windy. It is surrounded by faint rings, and more than two dozen small moons. It rotates at a nearly 90-degree angle from the plane of its orbit. This unique tilt makes Uranus appear to spin on its side.",
   },
   {
     name: "Neptune",
@@ -118,6 +125,7 @@ export const PlanetData: Planet[] = [
     sizeMI: 30598,
     moons: 16,
     rings: false,
+    desc: "Dark, cold and whipped by supersonic winds, giant Neptune is the eighth and most distant major planet orbiting our Sun. More than 30 times as far from the Sun as is Earth, Neptune is not visible to the naked eye. Neptune was the first planet located using math.",
   },
 ];
 

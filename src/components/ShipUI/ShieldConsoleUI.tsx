@@ -122,7 +122,7 @@ const ShieldConsoleUI = ({
           </div>
         </div>
 
-        <div className="flex-center my-10 flex flex-col gap-2 items-center">
+        <div className="flex-center my-10 flex flex-col gap-2 items- select-none">
           {stable ? (
             <p className="text-green-400 text-3xl">Shields Stable</p>
           ) : (

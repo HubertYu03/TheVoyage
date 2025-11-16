@@ -27,6 +27,7 @@ export type Planet = {
   sizeMI: number;
   moons: number;
   rings: boolean;
+  desc: string;
 };
 
 export type PlanetProgression = {

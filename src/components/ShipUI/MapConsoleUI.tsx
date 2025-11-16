@@ -41,6 +41,7 @@ type ShieldConsoleUIProps = {
   setCurrentDialogEntry: Dispatch<SetStateAction<DialogueEntry[] | null>>;
   setCurrentPlanet: Dispatch<SetStateAction<Planet>>;
   setTutorial: Dispatch<SetStateAction<boolean>>;
+  setPlanetImage: Dispatch<SetStateAction<string>>;
   playButtonHover: () => void;
   currentPlanet: Planet;
   talking: boolean;
@@ -57,6 +58,7 @@ const MapConsoleUI = ({
   setCurrentDialogEntry,
   setCurrentPlanet,
   setTutorial,
+  setPlanetImage,
   currentPlanet,
   talking,
   tutorial,
@@ -97,11 +99,10 @@ const MapConsoleUI = ({
   };
 
   const handleMapClick = (index: number) => {
-    console.log(index);
-
     setCurrentDialogEntry(PlanetDialogue[currentPlanet.name].outroDialog);
     handleClose();
-    setCurrentPlanet(PlanetData[0]);
+    setCurrentPlanet(PlanetData[index]);
+    setPlanetImage(`/images/${PlanetData[index].name}.jpg`);
 
     setTutorial(false);
   };
@@ -170,9 +171,20 @@ const MapConsoleUI = ({
                 onMouseEnter={() => setPlanetHover(planet.name)}
                 onMouseLeave={() => setPlanetHover(null)}
                 onClick={() => {
-                  if (!locked) handleMapClick(index);
+                  if (talking) return;
 
-                  playError();
+                  if (planets[planet.name].complete) return;
+
+                  if (planet.name != "Mercury") {
+                    alert("Planet not available yet!");
+                    return;
+                  }
+
+                  if (!locked) {
+                    handleMapClick(index);
+                  } else {
+                    playError();
+                  }
                 }}
               >
                 <PlanetIcon

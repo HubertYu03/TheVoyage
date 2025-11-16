@@ -19,7 +19,6 @@ import { useLoader } from "@react-three/fiber";
 import { TextureLoader } from "three";
 
 // Importing Images
-import Earth from "/images/Earth.png";
 import SpaceBackground from "/images/SpaceBackground.jpeg";
 
 // Importing Three Types
@@ -106,15 +105,6 @@ const ShipScene = ({
 
   const canvasRef = useRef<HTMLDivElement>(null!);
 
-  const EarthTexture: THREE.Texture<HTMLImageElement> = useLoader(
-    TextureLoader,
-    Earth
-  );
-  const SpaceTexture: THREE.Texture<HTMLImageElement> = useLoader(
-    TextureLoader,
-    SpaceBackground
-  );
-
   // States for if we are in the tutorial
   const [tutorial, setTutorial] = useState<boolean>(
     currentPlanet.name === "Earth"
@@ -140,6 +130,7 @@ const ShipScene = ({
   // State for progression
   const [enteredAtmos, setEnteredAtmos] = useState<boolean>(false);
   const [dataCollected, setDataCollected] = useState<boolean>(false);
+  const [planetImage, setPlanetImage] = useState<string>("/images/Earth.png");
   const { planets, setPlanets } = useGlobalState();
 
   // Helper function to play the data collected notification
@@ -180,6 +171,16 @@ const ShipScene = ({
   const [playAmbience, { stop: stopAmbience }] = useSound(ShipAmbience, {
     loop: true,
   });
+
+  // Textures
+  const PlanetTexture: THREE.Texture<HTMLImageElement> = useLoader(
+    TextureLoader,
+    planetImage
+  );
+  const SpaceTexture: THREE.Texture<HTMLImageElement> = useLoader(
+    TextureLoader,
+    SpaceBackground
+  );
 
   return (
     <section>
@@ -227,6 +228,7 @@ const ShipScene = ({
           playButtonHover={playButtonHover}
           tutorial={tutorial}
           tutorialStep={tutorialStep}
+          planets={planets}
         />
       )}
 
@@ -255,6 +257,7 @@ const ShipScene = ({
           setCurrentDialogEntry={setCurrentDialogEntry}
           setCurrentPlanet={setCurrentPlanet}
           setTutorial={setTutorial}
+          setPlanetImage={setPlanetImage}
           currentPlanet={currentPlanet}
           talking={talking}
           tutorial={tutorial}
@@ -277,7 +280,11 @@ const ShipScene = ({
 
           <mesh position={[0, 0, 300]} rotation={[0, Math.PI, 0]}>
             <planeGeometry args={[400, 400]} />
-            <meshBasicMaterial transparent={true} map={EarthTexture} />
+            <meshBasicMaterial
+              transparent={true}
+              map={PlanetTexture}
+              key={planetImage}
+            />
           </mesh>
 
           <mesh position={[0, 0, 395]} rotation={[0, Math.PI, 0]}>

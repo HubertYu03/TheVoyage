@@ -105,7 +105,7 @@ const InterfaceManager = ({
     gsap.to(split.chars, {
       opacity: 1,
       duration: 0,
-      stagger: 0.03,
+      stagger: 0.02,
       delay: delay,
       onUpdate: () => {
         if (counter % 4 == 0) playTextBlip();
@@ -194,8 +194,10 @@ const InterfaceManager = ({
 
         // Check if it is a outro
         if (finalText.current) {
-          setCurrentDialogue(PlanetDialogue[currentPlanet.name].introDialog);
           finalText.current = false;
+
+          setCurrentDialogue(PlanetDialogue[currentPlanet.name].introDialog);
+          setTalking(true);
         }
       } else {
         setDialogIndex(dialogIndex + 1);

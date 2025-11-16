@@ -13,71 +13,71 @@ const PlanetDialogue: PlanetDialogueType = {
         avatar: RiRobot3Fill,
         text: "Good morning, it seems you have awakened.",
       },
-      // {
-      //   speaker: "COMPUTER",
-      //   avatar: RiRobot3Fill,
-      //   text: "The shuttle has successfully exited Earth's atmosphere.",
-      // },
-      // {
-      //   speaker: "YOU",
-      //   avatar: FaUserAstronaut,
-      //   text: "*groan*",
-      // },
-      // {
-      //   speaker: "YOU",
-      //   avatar: FaUserAstronaut,
-      //   text: "Ah, how long was I out for?",
-      // },
-      // {
-      //   speaker: "COMPUTER",
-      //   avatar: RiRobot3Fill,
-      //   text: "It appears you passed out during our launch into space.",
-      // },
-      // {
-      //   speaker: "COMPUTER",
-      //   avatar: RiRobot3Fill,
-      //   text: "Shall I brief the mission to you again in case you have forgotten?",
-      // },
-      // {
-      //   speaker: "YOU",
-      //   avatar: FaUserAstronaut,
-      //   text: "Yeah sure go for it, a reminder wouldn't hurt.",
-      // },
-      // {
-      //   speaker: "COMPUTER",
-      //   avatar: RiRobot3Fill,
-      //   text: "Very well.",
-      // },
-      // {
-      //   speaker: "COMPUTER",
-      //   avatar: RiRobot3Fill,
-      //   text: "Mission briefing, June 20th, 2079. To travel to all eight planets in our solar system and collect vital research data.",
-      // },
-      // {
-      //   speaker: "COMPUTER",
-      //   avatar: RiRobot3Fill,
-      //   text: "Utilizing the new and improved shuttle for space travel, THE BEYOND.",
-      // },
-      // {
-      //   speaker: "YOU",
-      //   avatar: FaUserAstronaut,
-      //   text: "Alright, just going to all the planets and getting data, shouldn't be too bad.",
-      // },
-      // {
-      //   speaker: "COMPUTER",
-      //   avatar: RiRobot3Fill,
-      //   text: "Correct.",
-      // },
-      // {
-      //   speaker: "COMPUTER",
-      //   avatar: RiRobot3Fill,
-      //   text: "Allow me to guide you through the process of data collection.",
-      // },
-      // {
-      //   speaker: "COMPUTER",
-      //   avatar: RiRobot3Fill,
-      //   text: "We first need to access our console to see what data we need to collect. Look around and click on the RIGHT SCREEN.",
-      // },
+      {
+        speaker: "COMPUTER",
+        avatar: RiRobot3Fill,
+        text: "The shuttle has successfully exited Earth's atmosphere.",
+      },
+      {
+        speaker: "YOU",
+        avatar: FaUserAstronaut,
+        text: "*groan*",
+      },
+      {
+        speaker: "YOU",
+        avatar: FaUserAstronaut,
+        text: "Ah, how long was I out for?",
+      },
+      {
+        speaker: "COMPUTER",
+        avatar: RiRobot3Fill,
+        text: "It appears you passed out during our launch into space.",
+      },
+      {
+        speaker: "COMPUTER",
+        avatar: RiRobot3Fill,
+        text: "Shall I brief the mission to you again in case you have forgotten?",
+      },
+      {
+        speaker: "YOU",
+        avatar: FaUserAstronaut,
+        text: "Yeah sure go for it, a reminder wouldn't hurt.",
+      },
+      {
+        speaker: "COMPUTER",
+        avatar: RiRobot3Fill,
+        text: "Very well.",
+      },
+      {
+        speaker: "COMPUTER",
+        avatar: RiRobot3Fill,
+        text: "Mission briefing, June 20th, 2079. To travel to all eight planets in our solar system and collect vital research data.",
+      },
+      {
+        speaker: "COMPUTER",
+        avatar: RiRobot3Fill,
+        text: "Utilizing the new and improved shuttle for space travel, THE BEYOND.",
+      },
+      {
+        speaker: "YOU",
+        avatar: FaUserAstronaut,
+        text: "Alright, just going to all the planets and getting data, shouldn't be too bad.",
+      },
+      {
+        speaker: "COMPUTER",
+        avatar: RiRobot3Fill,
+        text: "Correct.",
+      },
+      {
+        speaker: "COMPUTER",
+        avatar: RiRobot3Fill,
+        text: "Allow me to guide you through the process of data collection.",
+      },
+      {
+        speaker: "COMPUTER",
+        avatar: RiRobot3Fill,
+        text: "We first need to access our console to see what data we need to collect. Look around and click on the RIGHT SCREEN.",
+      },
     ],
     outroDialog: [
       {
@@ -117,17 +117,17 @@ const PlanetDialogue: PlanetDialogueType = {
       },
     ],
   },
-  mercury: {
+  Mercury: {
     introDialog: [
       {
         speaker: "Ally",
         avatar: RiRobot3Fill,
-        text: "Ah! I see that you have finally woken up.",
+        text: "We have arrived at Mercury.",
       },
       {
         speaker: "Ally",
         avatar: RiRobot3Fill,
-        text: "We have approached the outer atmosphere of Earth.",
+        text: "Here we can try practicing what we learned for data collection.",
       },
     ],
     outroDialog: [],
