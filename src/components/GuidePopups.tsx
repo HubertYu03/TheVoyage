@@ -17,7 +17,7 @@ const GuidePopups = ({ tutorialIndex }: GuidePopupsProps) => {
       setCurrentText(text);
       setVisible(true);
 
-      // Entrance animation
+      // Entrance animationq
       if (popupRef.current) {
         gsap.set(popupRef.current, { y: -50, opacity: 0 });
 

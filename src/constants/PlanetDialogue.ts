@@ -6,18 +6,18 @@ import { RiRobot3Fill } from "react-icons/ri";
 import { FaUserAstronaut } from "react-icons/fa";
 
 const PlanetDialogue: PlanetDialogueType = {
-  earth: {
+  Earth: {
     introDialog: [
       {
         speaker: "COMPUTER",
         avatar: RiRobot3Fill,
         text: "Good morning, it seems you have awakened.",
       },
-      {
-        speaker: "COMPUTER",
-        avatar: RiRobot3Fill,
-        text: "The shuttle as successfully exited Earth's atmosphere.",
-      },
+      // {
+      //   speaker: "COMPUTER",
+      //   avatar: RiRobot3Fill,
+      //   text: "The shuttle has successfully exited Earth's atmosphere.",
+      // },
       // {
       //   speaker: "YOU",
       //   avatar: FaUserAstronaut,
@@ -73,6 +73,48 @@ const PlanetDialogue: PlanetDialogueType = {
       //   avatar: RiRobot3Fill,
       //   text: "Allow me to guide you through the process of data collection.",
       // },
+      // {
+      //   speaker: "COMPUTER",
+      //   avatar: RiRobot3Fill,
+      //   text: "We first need to access our console to see what data we need to collect. Look around and click on the RIGHT SCREEN.",
+      // },
+    ],
+    outroDialog: [
+      {
+        speaker: "YOU",
+        avatar: FaUserAstronaut,
+        text: "Alright, this shouldn't be too hard.",
+      },
+      {
+        speaker: "COMPUTER",
+        avatar: RiRobot3Fill,
+        text: "Yes. As you can see, gathering data is not a difficult task.",
+      },
+      {
+        speaker: "COMPUTER",
+        avatar: RiRobot3Fill,
+        text: "Just make sure to follow the steps for data collection, and you will able to return home in no time.",
+      },
+      {
+        speaker: "YOU",
+        avatar: FaUserAstronaut,
+        text: "You got it robot.",
+      },
+      {
+        speaker: "YOU",
+        avatar: FaUserAstronaut,
+        text: "Hey by the way, what should I call you?",
+      },
+      {
+        speaker: "AllY",
+        avatar: RiRobot3Fill,
+        text: "You may call me ALLY, the name given to me by my manufacturers.",
+      },
+      {
+        speaker: "YOU",
+        avatar: FaUserAstronaut,
+        text: "Alright ALLY, let's get this show on the road!",
+      },
     ],
   },
   mercury: {
@@ -88,6 +130,7 @@ const PlanetDialogue: PlanetDialogueType = {
         text: "We have approached the outer atmosphere of Earth.",
       },
     ],
+    outroDialog: [],
   },
 };
 

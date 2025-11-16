@@ -14,8 +14,17 @@ body {
   background: #090979;
   background: radial-gradient(
     circle,
-    rgba(9, 9, 121, 0.5) 80%,
-    rgba(0, 212, 255, 0.5) 100%
+    rgba(9, 9, 121, 0.7) 80%,
+    rgba(0, 212, 255, 0.7) 100%
+  );
+}
+
+.hologram-ui {
+  background: #090979;
+  background: radial-gradient(
+    circle,
+    rgba(9, 9, 121, 1) 80%,
+    rgba(0, 212, 255, 1) 100%
   );
 }
 
@@ -28,6 +37,14 @@ body {
   transform: scale(0.9);
 }
 
+.console-tab {
+  cursor: url("/images/Pointer.png"), auto;
+}
+
+.map-icon:hover {
+  cursor: url("/images/Pointer.png"), auto;
+}
+
 @layer components {
   .canvas {
     @apply w-screen h-screen bg-black z-10;
@@ -36,6 +53,10 @@ body {
   .ui-button-container {
     @apply absolute top-5 right-7 flex flex-row items-center gap-3;
   }
+
+  .console-tab {
+    @apply flex-center p-2;
+  }
 }
 
 @layer utilities {
@@ -43,8 +64,12 @@ body {
     @apply rounded-md border-[#00d5ff62] border-2;
   }
 
+  .hologram-ui {
+    @apply rounded-md border-[#00d5ff62] border-2;
+  }
+
   .hologram-text {
-    @apply text-[#00D4FF] font-light select-none;
+    @apply text-[#00D4FF] select-none;
   }
 
   .dialogue-name {
@@ -54,4 +79,48 @@ body {
   .flex-center {
     @apply flex items-center justify-center;
   }
+
+  .flex-center-row {
+    @apply flex flex-row items-center;
+  }
+}
+
+/* Slider Styles */
+.SliderRoot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 20px;
+}
+
+.SliderTrack {
+  background-color: #00d4ff;
+  position: relative;
+  flex-grow: 1;
+  height: 4px;
+  border-radius: 20px;
+}
+
+.SliderRange {
+  background-color: #00d4ff; /* green */
+  position: absolute;
+  height: 100%;
+  border-radius: 20px;
+}
+
+.SliderThumb {
+  display: block;
+  width: 16px;
+  height: 16px;
+  background-color: #00d4ff;
+  border-radius: 50%;
+}
+
+.SliderThumb:hover {
+  cursor: url("/images/Pointer.png"), auto;
+}
+
+.SliderThumb:active {
+  scale: 1.1;
 }

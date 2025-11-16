@@ -14,11 +14,19 @@ import {
 
 // Importing Icons
 import { BiSolidRightArrow } from "react-icons/bi";
-import type { DialogueEntry, PlanetDialogueSection } from "../types/global";
+import type {
+  DialogueEntry,
+  Planet,
+  PlanetDialogueSection,
+} from "../types/global";
 
 // Importing sound effects
 import useSound from "use-sound";
 import TextBlip from "/sounds/TextBlip.mp3";
+
+// Importing Constants
+import { TutorialDialogue } from "../constants/PlanetTutorial";
+import { PlanetDialogue } from "../constants/PlanetDialogue";
 
 // GSAP Plugin for text animations
 gsap.registerPlugin(SplitText);
@@ -31,7 +39,11 @@ type InterfaceManagerProps = {
   playButtonHover: () => void;
   planetDialogueData: PlanetDialogueSection;
   setTutorialIndex: Dispatch<SetStateAction<number>>;
-  currentPlanet: string;
+  currentTutorialText: DialogueEntry[] | null;
+  tutorial: boolean;
+  setTutorialStep: Dispatch<SetStateAction<number>>;
+  currentDialogEntry: DialogueEntry[] | null;
+  currentPlanet: Planet;
 };
 
 const InterfaceManager = ({
@@ -41,12 +53,18 @@ const InterfaceManager = ({
   playButtonHover,
   planetDialogueData,
   setTutorialIndex,
+  currentTutorialText,
+  tutorial,
+  currentDialogEntry,
+  setTutorialStep,
   currentPlanet,
 }: InterfaceManagerProps) => {
   const [dialogIndex, setDialogIndex] = useState<number>(0);
   const [currentTextComplete, setCurrentTextCompete] = useState<boolean>(false);
+
   // States for loading
   const firstText = useRef<boolean>(true);
+  const finalText = useRef<boolean>(false);
   const [fontReady, setFontReady] = useState<boolean>(true);
 
   // State for holding the current dialogue list
@@ -69,6 +87,7 @@ const InterfaceManager = ({
   }, []);
 
   // Refs for GSAP targetting
+  const textBoxRef = useRef<HTMLDivElement>(null!);
   const textRef = useRef<HTMLSpanElement>(null!);
   const arrowRef = useRef<HTMLDivElement>(null!);
 
@@ -86,7 +105,7 @@ const InterfaceManager = ({
     gsap.to(split.chars, {
       opacity: 1,
       duration: 0,
-      stagger: 0.04,
+      stagger: 0.03,
       delay: delay,
       onUpdate: () => {
         if (counter % 4 == 0) playTextBlip();
@@ -100,7 +119,7 @@ const InterfaceManager = ({
     });
 
     return () => split.revert();
-  }, [start, dialogIndex]);
+  }, [start, dialogIndex, currentDialogue]);
 
   // Animate the continue arrow
   useEffect(() => {
@@ -114,6 +133,37 @@ const InterfaceManager = ({
       });
     }
   }, [currentTextComplete]);
+
+  useEffect(() => {
+    // If there is current tutorial dialogue
+    if (currentTutorialText) {
+      setDialogIndex(0); // Reset the dialogue index
+      setTalking(true); // Set talking back to true
+      setCurrentTextCompete(false); // Set the current text complete to false
+      setCurrentDialogue(currentTutorialText); // Get the current tutorial text
+    }
+  }, [currentTutorialText]);
+
+  useEffect(() => {
+    if (currentDialogEntry) {
+      setDialogIndex(0); // Reset the dialogue index
+      setTalking(true); // Set talking back to true
+      setCurrentTextCompete(false); // Set the current text complete to false
+      setCurrentDialogue(currentDialogEntry); // Get the current tutorial text
+
+      // Setting final text to be true
+      finalText.current = true;
+    }
+  }, [currentDialogEntry]);
+
+  useEffect(() => {
+    // Animate the opening of the box
+    gsap.fromTo(
+      textBoxRef.current,
+      { scale: 0.2 },
+      { scale: 1, duration: 0.2 }
+    );
+  }, [currentDialogue]);
 
   // Helper Functions
   const handleNextText = () => {
@@ -129,23 +179,40 @@ const InterfaceManager = ({
         setTalking(false);
         setDialogIndex(0);
 
-        // If the current planet is earth go through the tutorial
-        if (currentPlanet == "earth") {
-          setTutorialIndex(100);
+        // Perform special tasks if we are in the tutorial
+        if (tutorial) {
+          setTutorialIndex(-1);
+
+          if (currentDialogue === TutorialDialogue["Explain Orbit Controls"]) {
+            setTutorialStep((prev) => prev + 1);
+          }
+
+          if (currentDialogue === TutorialDialogue["Shields Complete"]) {
+            setTutorialStep((prev) => prev + 1);
+          }
+        }
+
+        // Check if it is a outro
+        if (finalText.current) {
+          setCurrentDialogue(PlanetDialogue[currentPlanet.name].introDialog);
+          finalText.current = false;
         }
       } else {
         setDialogIndex(dialogIndex + 1);
 
-        if (currentPlanet == "earth") setTutorialIndex(dialogIndex + 1);
+        if (tutorial) setTutorialIndex(dialogIndex + 1);
       }
     }
   };
 
   return (
-    <div className="absolute bottom-20 left-0 right-0 z-50 flex justify-center">
+    <div
+      ref={textBoxRef}
+      className="absolute bottom-20 left-0 right-0 z-50 flex justify-center"
+    >
       {start && talking && (
         <div
-          className="hologram relative px-12 py-6 rounded-md w-1/3"
+          className="hologram relative px-12 py-6 rounded-md w-4/5 sm:w-1/3"
           onClick={handleNextText}
         >
           {/* Speaker Name */}

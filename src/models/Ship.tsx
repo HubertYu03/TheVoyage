@@ -7,7 +7,14 @@ import { useGLTF } from "@react-three/drei";
 
 // Importing types
 import { type GLTF } from "three-stdlib";
-import { type JSX } from "react";
+import { type Dispatch, type JSX, type SetStateAction } from "react";
+import type { DialogueEntry, Planet, PlanetProgression } from "../types/global";
+import { TutorialDialogue, TutorialManager } from "../constants/PlanetTutorial";
+
+import useSound from "use-sound";
+import ShipSelect from "/sounds/ShipSelect.wav";
+import LeverCrank from "/sounds/LeverCrank.mp3";
+import ButtonClick from "/sounds/ButtonClicked.mp3";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -82,13 +89,134 @@ const LightMaterial = () => {
 // Props for the Model
 type ShipProps = {
   props?: JSX.IntrinsicElements["group"];
+  setHoveredElement: Dispatch<SetStateAction<string | null>>;
+  setCurrentTutorialText: Dispatch<SetStateAction<DialogueEntry[] | null>>;
+  setTutorialIndex: Dispatch<SetStateAction<number>>;
+  setTutorialStep: Dispatch<SetStateAction<number>>;
+  setCurrentScreen: Dispatch<SetStateAction<string | null>>;
+  setScreenSelected: Dispatch<SetStateAction<boolean>>;
+  setPlanets: Dispatch<SetStateAction<Record<string, PlanetProgression>>>;
+  setEnteredAtmos: Dispatch<SetStateAction<boolean>>;
+  showDataCollected: () => void;
   talking: boolean;
+  tutorial: boolean;
+  tutorialStep: number;
+  screenSelected: boolean;
+  currentPlanet: Planet;
 };
 
-const Ship = ({ props, talking }: ShipProps) => {
+const Ship = ({
+  props,
+  setHoveredElement,
+  setCurrentTutorialText,
+  setTutorialIndex,
+  setTutorialStep,
+  setCurrentScreen,
+  setScreenSelected,
+  setPlanets,
+  setEnteredAtmos,
+  showDataCollected,
+  talking,
+  tutorial,
+  tutorialStep,
+  screenSelected,
+  currentPlanet,
+}: ShipProps) => {
   const { nodes, materials } = useGLTF(
     "/models/Cockpit.glb"
   ) as unknown as GLTFResult;
+
+  // Configuration of sounds
+  const [playShipSelect] = useSound(ShipSelect, { volume: 0.5 });
+  const [playButtonClick] = useSound(ButtonClick, { volume: 0.5 });
+  const [playLeverCrank] = useSound(LeverCrank, { volume: 0.5 });
+
+  const handleClick = (name: string) => {
+    if (talking || screenSelected) return;
+
+    // Select the right sound to play
+    if (name == "Ship Thrusters") {
+      playLeverCrank();
+
+      if (!tutorial) {
+        setPlanets((prev) => ({
+          ...prev,
+          [currentPlanet.name]: {
+            ...prev[currentPlanet.name],
+            surfaceType: true,
+          },
+        }));
+
+        showDataCollected();
+      }
+
+      // Enter atmosphere
+      setEnteredAtmos(true);
+    } else if (name === "Orbit Controls") {
+      playButtonClick();
+
+      // Update data for Color, Moons, Size, Rings
+      if (!tutorial) {
+        setPlanets((prev) => ({
+          ...prev,
+          [currentPlanet.name]: {
+            ...prev[currentPlanet.name],
+            color: true,
+            moons: true,
+            size: true,
+            rings: true,
+          },
+        }));
+
+        showDataCollected();
+      }
+    } else {
+      playShipSelect();
+      setCurrentScreen(name);
+      setScreenSelected(true);
+    }
+
+    if (tutorial) {
+      // Check for the current tutorial step
+      checkTutorialStep(name);
+    }
+  };
+
+  // Helper for checking the current tutorial step
+  const checkTutorialStep = (name: string) => {
+    if (TutorialManager[tutorialStep] == name) {
+      setCurrentTutorialText([...TutorialDialogue[name]]);
+      setTutorialIndex(-1);
+      setTutorialStep((prev) => prev + 1);
+
+      // Select the right sound to play
+      if (name == "Ship Thrusters") {
+        setPlanets((prev) => ({
+          ...prev,
+          [currentPlanet.name]: {
+            ...prev[currentPlanet.name],
+            surfaceType: true,
+          },
+        }));
+
+        showDataCollected();
+      } else if (name === "Orbit Controls") {
+        // Update data for Color, Moons, Size, Rings
+        setPlanets((prev) => ({
+          ...prev,
+          [currentPlanet.name]: {
+            ...prev[currentPlanet.name],
+            color: true,
+            moons: true,
+            size: true,
+            rings: true,
+          },
+        }));
+
+        showDataCollected();
+      }
+    }
+  };
 
   return (
     <group {...props} dispose={null}>
@@ -117,37 +245,63 @@ const Ship = ({ props, talking }: ShipProps) => {
 
       {/* Meshes that have screens */}
       <mesh
-        name="Screen001"
+        name="Map"
         geometry={nodes.Screen001.geometry}
         position={[1.321, 1.769, -0.48]}
         rotation={[-0.901, 0, 0]}
         ref={(mesh) => mesh && mesh.layers.enable(1)}
         onPointerEnter={() => {
-          if (!talking)
+          if (!talking && !screenSelected) {
             document.body.style.cursor = "url('/images/Pointer.png'), auto";
+            setHoveredElement("Map");
+          }
         }}
         onPointerLeave={() => {
           document.body.style.cursor = "url('/images/Cursor.png'), auto";
+          setHoveredElement(null);
         }}
+        onClick={() => handleClick("Map")}
       >
         <LightMaterial />
       </mesh>
       <mesh
-        name="Plane"
+        name="Console"
         geometry={nodes.Plane.geometry}
         position={[-1.238, 1.769, -0.48]}
         rotation={[-0.901, 0, 0]}
         ref={(mesh) => mesh && mesh.layers.enable(1)}
+        onPointerEnter={() => {
+          if (!talking && !screenSelected) {
+            document.body.style.cursor = "url('/images/Pointer.png'), auto";
+            setHoveredElement("Console");
+          }
+        }}
+        onPointerLeave={() => {
+          document.body.style.cursor = "url('/images/Cursor.png'), auto";
+          setHoveredElement(null);
+        }}
+        onClick={() => handleClick("Console")}
       >
         <LightMaterial />
       </mesh>
       <mesh
-        name="Screen002"
+        name="Shields Console"
         geometry={nodes.Screen002.geometry}
         material={materials.Screen}
         position={[2.844, 1.678, -0.513]}
         rotation={[-0.897, 0, 0]}
         ref={(mesh) => mesh && mesh.layers.enable(1)}
+        onPointerEnter={() => {
+          if (!talking && !screenSelected) {
+            document.body.style.cursor = "url('/images/Pointer.png'), auto";
+            setHoveredElement("Shields Console");
+          }
+        }}
+        onPointerLeave={() => {
+          document.body.style.cursor = "url('/images/Cursor.png'), auto";
+          setHoveredElement(null);
+        }}
+        onClick={() => handleClick("Shields Console")}
       >
         <LightMaterial />
       </mesh>
@@ -239,9 +393,20 @@ const Ship = ({ props, talking }: ShipProps) => {
         material={materials["Ship Bearing"]}
       />
       <mesh
-        name="Cube008"
+        name="Ship Thrusters"
         geometry={nodes.Cube008.geometry}
         material={materials["Screen Border"]}
+        onPointerEnter={() => {
+          if (!talking && !screenSelected) {
+            document.body.style.cursor = "url('/images/Pointer.png'), auto";
+            setHoveredElement("Ship Thrusters");
+          }
+        }}
+        onPointerLeave={() => {
+          document.body.style.cursor = "url('/images/Cursor.png'), auto";
+          setHoveredElement(null);
+        }}
+        onClick={() => handleClick("Ship Thrusters")}
       />
       <mesh
         name="Cube008_1"
@@ -264,9 +429,20 @@ const Ship = ({ props, talking }: ShipProps) => {
         material={materials.Button}
       />
       <mesh
-        name="Cube014"
+        name="Ship Orbit"
         geometry={nodes.Cube014.geometry}
         material={materials["Screen Border"]}
+        onPointerEnter={() => {
+          if (!talking && !screenSelected) {
+            document.body.style.cursor = "url('/images/Pointer.png'), auto";
+            setHoveredElement("Orbit Controls");
+          }
+        }}
+        onPointerLeave={() => {
+          document.body.style.cursor = "url('/images/Cursor.png'), auto";
+          setHoveredElement(null);
+        }}
+        onClick={() => handleClick("Orbit Controls")}
       />
       <mesh
         name="Cube014_1"
